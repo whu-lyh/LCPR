@@ -83,12 +83,12 @@ def get_location_indices(nusc, location):
 
 
 def main():
-    dataroot = '/media/zzj/DATA/DataSets/nuScenes'
+    dataroot = '/workspace/LCPR/dataset/nuScenes/nuScenes'
     nusc_trainval = NuScenes(version='v1.0-trainval', dataroot=dataroot, verbose=True)
     nusc_test = NuScenes(version='v1.0-test', dataroot=dataroot, verbose=True)
 
     # ====================generate infos====================
-    dataroot = '/media/zzj/DATA/DataSets/nuScenes'
+    dataroot = '/workspace/LCPR/dataset/nuScenes/nuScenes'
     sample_tokens_trainval = get_location_sample_tokens(nusc_trainval, location='boston-seaport')
     sample_tokens_test = get_location_sample_tokens(nusc_test, location='boston-seaport')
     infos = gen_info(nusc_trainval, sample_tokens_trainval)

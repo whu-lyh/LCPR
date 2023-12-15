@@ -8,13 +8,15 @@ This repository is the official implementation of [our paper:](https://arxiv.org
 Sensor fusion has been considered an effective method to overcome the weaknesses of individual sensors. Most existing multimodal place recognition methods only use limited field-of-view camera images, which leads to an imbalance between features from different modalities and limits the effectiveness of sensor fusion. Thus, we propose a novel multimodal place recognition neural network LCPR. It takes mult-view RGB images and LiDAR range images as input, extracts discriminative and yaw-rotation invariant global descriptors for fast query-database matching. 
 
 ## Table of Contents
-1. [Introduction](#LCPR)
-2. [Install](#install)
-3. [Data Preparation](#data-preparation)
-4. [Training](#training)
-5. [Evaluation](#evaluation)
-6. [Download](#download)
-7. [Citation](#citation)
+- [LCPR](#lcpr)
+  - [Introduction](#introduction)
+  - [Table of Contents](#table-of-contents)
+  - [Install](#install)
+  - [Data Preparation](#data-preparation)
+  - [Training](#training)
+  - [Evaluation](#evaluation)
+  - [Download](#download)
+  - [Citation](#citation)
 
 
 ## Install

@@ -1,8 +1,9 @@
+import os
+import pickle
+import random
+
 import numpy as np
 from sklearn.neighbors import NearestNeighbors
-import os
-import random
-import pickle
 
 from tools.utils import check_path
 
@@ -68,7 +69,7 @@ def main():
     # ==================================================================
     print('==> generating database...')
     DIS_TH = 1  # Map Point Distance (m)
-
+    # FIXME?
     pos_whole_bs = np.concatenate(
         (np.arange(len(pos_whole_bs), dtype=np.int32).reshape(-1, 1), np.array(pos_whole_bs)),
         axis=1).astype(np.float32)
@@ -123,7 +124,7 @@ def main():
     print('singapore queenstown database frames: ', pos_sq_db.shape[0])
 
     # ==================================================================
-    # generate train_query, val_query, test_query indices
+    # generate train_query, val_query, test_query indices based on timestamps
     # ==================================================================
     print('==> generating query indices...')
     timestamps = np.array(timestamps_bs - min(timestamps_bs)) / (3600 * 24 * 1e6)
@@ -134,6 +135,7 @@ def main():
     fi_bs_db = pos_bs_db[:, 0].astype(int)
     fi_bs_train_query = list(set(fi_bs_train) - set(fi_bs_db))
     fi_bs_testval_query = list(set(fi_bs_testval) - set(fi_bs_db))
+    # get the random 1/4 as val set
     fi_bs_val_query = random.sample(fi_bs_testval_query, int(len(fi_bs_testval_query) * 0.25))
     fi_bs_test_query = list(set(fi_bs_testval_query) - set(fi_bs_val_query))
     pos_bs_train_query = pos_whole_bs[fi_bs_train_query]
@@ -166,7 +168,7 @@ def main():
     DIS_TH = 9
     knn = NearestNeighbors(n_neighbors=1)
     knn.fit(pos_bs_db[:, 1:3])
-
+    # where is delete operation?
     pos_bs_train_query_new = list()
     for i in range(len(pos_bs_train_query)):
         dis, index = knn.kneighbors(pos_bs_train_query[i, 1:3].reshape(1, -1), 1, return_distance=True)
@@ -224,12 +226,15 @@ def main():
         if dis < DIS_TH:
             pos_sq_test_query_new.append(pos_sq_test_query[i, :])
     pos_sq_test_query = np.array(pos_sq_test_query_new)
-
+    # only seaport sequence has val set
     print('boston seaport train query: ', pos_bs_train_query.shape[0])
     print('boston seaport test query: ', pos_bs_test_query.shape[0])
     print('boston seaport val query: ', pos_bs_val_query.shape[0])
+    
     print('singapore one north query: ', pos_son_query.shape[0])
+    
     print('singapore holland village query: ', pos_shv_query.shape[0])
+    
     print('singapore queenstown train query: ', pos_sq_train_query.shape[0])
     print('singapore queenstown test query: ', pos_sq_test_query.shape[0])
 
@@ -242,13 +247,16 @@ def main():
     np.save(os.path.join(dataroot, 'bs_train_query.npy'), pos_bs_train_query)
     np.save(os.path.join(dataroot, 'bs_val_query.npy'), pos_bs_val_query)
     np.save(os.path.join(dataroot, 'bs_test_query.npy'), pos_bs_test_query)
+    
     np.save(os.path.join(dataroot, 'son_db.npy'), pos_son_db)
     np.save(os.path.join(dataroot, 'son_query.npy'), pos_son_query)
+    
     np.save(os.path.join(dataroot, 'shv_db.npy'), pos_shv_db)
     np.save(os.path.join(dataroot, 'shv_query.npy'), pos_shv_query)
+    
+    np.save(os.path.join(dataroot, 'sq_db.npy'), pos_sq_db)
     np.save(os.path.join(dataroot, 'sq_train_query.npy'), pos_sq_train_query)
     np.save(os.path.join(dataroot, 'sq_test_query.npy'), pos_sq_test_query)
-    np.save(os.path.join(dataroot, 'sq_db.npy'), pos_sq_db)
 
 
 if __name__ == '__main__':

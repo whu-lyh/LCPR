@@ -207,6 +207,5 @@ class DatabaseQueryDataset(BaseDataset):
             knn = NearestNeighbors(n_jobs=-1)
             dataset = np.ascontiguousarray(self.dataset[:self.num_db, 1:])
             knn.fit(dataset)
-            self.positives = list(knn.radius_neighbors(self.dataset[self.num_db:, 1:], radius=self.nonTrivPosDistThres,
-                                                       return_distance=False))
+            self.positives = list(knn.radius_neighbors(self.dataset[self.num_db:, 1:], radius=self.nonTrivPosDistThres, return_distance=False))
         return self.positives
